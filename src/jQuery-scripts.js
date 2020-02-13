@@ -78,15 +78,33 @@ $(document).ready( () => {
 
     
     // JQUERY FOR HANDLING TICKETMASTER SECTION
-    // take keyword input
-    // use that keyword in TM API call
+    // take keyword input (validate?)
+    // use that keyword in TM API call ($.ajax? .get()?)
     // using the data that was returned (first 10 events?)
         // display error message if nothing found
     // display those results below dynamically with buttons
     // add event to EventRecommender if clicked button
     // display event
     
-
+    $("#event-search").submit( (e) => {
+        event.preventDefault();
+        let keyword = $("#tm-event-keyword").val();
+        console.log(keyword);
+        $.ajax({
+            type:"GET",
+            url:"https://app.ticketmaster.com/discovery/v2/events.json?size=1&apikey=7elxdku9GGG5k8j0Xm8KWdANDgecHMV0",
+            async:true,
+            dataType: "json",
+            success: function(json) {
+                        console.log(json);
+                        // Parse the response.
+                        // Do other things.
+                     },
+            error: function(xhr, status, err) {
+                        // This time, we do not end up here!
+                     }
+          });
+    })
 
 
     $("#date-search").submit(() => {

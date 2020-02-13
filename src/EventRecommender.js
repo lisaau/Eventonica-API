@@ -93,7 +93,7 @@ class Event {
         this.eventName = eventName;
         this.date = date; // expect date object in input
         this.category = category;
-        this.eventID = eventID;
+        this.eventID = eventID || Math.floor(Math.random() * 100000);
         this.description = description;
     }
 
@@ -105,7 +105,7 @@ class Event {
 class User {
     constructor(userName, userID) {
         this.userName = userName;
-        this.userID = userID;
+        this.userID = userID || Math.floor(Math.random() * 100000);
     }
     
     getUserID() {
