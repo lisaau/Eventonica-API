@@ -1,5 +1,5 @@
 $(document).ready( () => {
-    const eventRecommender = new EventRecommender();
+const eventRecommender = new EventRecommender();
     eventRecommender.addUser("Lisa", 12345);
     eventRecommender.addUser("Kim", 12346);
     eventRecommender.addUser("Bob", 12347);
@@ -57,7 +57,7 @@ $(document).ready( () => {
 
     displayEvents();
 
-    $("#add-event").submit((event) => {
+    $("#add-event").submit(() => {
         // event.preventDefault();
         console.log("add event button is clicked")
         let id = parseInt($("#add-event-id").val());
@@ -90,6 +90,63 @@ $(document).ready( () => {
         event.preventDefault();
         let keyword = $("#tm-event-keyword").val();
         console.log(keyword);
+
+
+        function buttonCreator() {
+            let newButton = document.createElement("INPUT");
+            newButton.setAttribute("type", "submit");
+            // document.body.appendChild(newButton);
+        }
+
+        // fetch syntax
+        let requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+        
+        // fetches events in the US by keyword and displays top 3 events
+        fetch(`https://app.ticketmaster.com/discovery/v2/events.json?countryCode=US&apikey=7elxdku9GGG5k8j0Xm8KWdANDgecHMV0&size=3&keyword=${keyword}`, requestOptions)
+        .then(response => response.json())
+        .then(result => result._embedded.events)
+        // .then(events => console.log(events))
+        .then(events => {
+            let message = ''
+            for (let event of events) {
+                let TMeventName = event.name;
+                let TMeventDate = event.dates.start.localDate;
+                let TMeventCategory = event.classifications["0"].segment.name;
+                // let btn = document.createElement("input");
+                // $("#event-search-result").appendChild(btn)
+                let results = `<li>${TMeventName} - ${moment(TMeventDate).format('MMM Do YYYY')} - ${TMeventCategory} INSERT BUTTON</li>`
+            
+
+                // console.log(event.name, event.dates.start.localDate, event.classifications["0"].segment.name, event)
+                message += results;
+            }
+            $("#event-search-result").html(message)
+        })
+        .catch(error => {
+            console.log('error', error);
+            $("#event-search-result").html("No events found")
+        });
+        
+        /*
+        // jquery syntax from postman
+        let urlSettings = {
+            'url': "https://app.ticketmaster.com/discovery/v2/events.json?countryCode=US&apikey=7elxdku9GGG5k8j0Xm8KWdANDgecHMV0&size=1&keyword=" + keyword,
+            "method": "GET",
+            "timeout": 0,
+        };
+        console.log(urlSettings.url); // see if the URL looks correct
+
+        // $.ajax(urlSettings).done(function (response) {
+        //     console.log(response);
+        // });
+        */
+
+
+        /*
+        // syntax from TM site
         $.ajax({
             type:"GET",
             url:"https://app.ticketmaster.com/discovery/v2/events.json?size=1&apikey=7elxdku9GGG5k8j0Xm8KWdANDgecHMV0",
@@ -104,7 +161,9 @@ $(document).ready( () => {
                         // This time, we do not end up here!
                      }
           });
+          */
     })
+    
 
 
     $("#date-search").submit(() => {
