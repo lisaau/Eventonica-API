@@ -58,8 +58,6 @@ const eventRecommender = new EventRecommender();
     displayEvents();
 
     $("#add-event").submit(() => {
-        // event.preventDefault();
-        console.log("add event button is clicked")
         let id = parseInt($("#add-event-id").val());
         let name = $("#add-event-name").val();
         let date = $("#add-event-date").val();
@@ -90,8 +88,6 @@ const eventRecommender = new EventRecommender();
         event.preventDefault();
         
         let keyword = $("#tm-event-keyword").val();
-        console.log(keyword);
-
 
         // fetch syntax
         let requestOptions = {
@@ -99,7 +95,7 @@ const eventRecommender = new EventRecommender();
             redirect: 'follow'
         };
         
-        // fetches events in the US by keyword and displays one event (size = 1)
+        // fetches event in the US by keyword and displays one event (size = 1). Converts to json and extract event array. Get name, date, category, and location (since there is no description). 
         fetch(`https://app.ticketmaster.com/discovery/v2/events.json?countryCode=US&apikey=7elxdku9GGG5k8j0Xm8KWdANDgecHMV0&size=1&keyword=${keyword}`, requestOptions)
         .then(response => response.json())
         .then(result => result._embedded.events)
@@ -110,7 +106,6 @@ const eventRecommender = new EventRecommender();
                 let TMeventDate = event.dates.start.localDate;
                 let TMeventCategory = event.classifications["0"].segment.name;
                 let TMeventLocation = event._embedded.venues["0"].name;
-                console.log(TMeventLocation);
 
                 let results = `<li class="TM-event-search-result">${TMeventName} - ${moment(TMeventDate).format('MMM Do YYYY')} - ${TMeventCategory} - ${TMeventLocation}</li>`
             
@@ -134,72 +129,17 @@ const eventRecommender = new EventRecommender();
             console.log('error', error);
             $("#event-search-result").html("No events found")
         });
-
-        // let newButton = document.createElement("BUTTON");
-        // newButton.innerHTML = "Save all"
-        // document.getElementById("btn").appendChild(newButton);
-        // console.log("buttonCreator works")
-        // document.getElementById("btn").addEventListener("click", () => {
-        //     displayEvents()
-        // })
-
-        // function buttonCreator() {
-        //     let newButton = document.createElement("BUTTON");
-        //     newButton.innerHTML = "Save all"
-        //     document.getElementById("btn").appendChild(newButton);
-        //     console.log("buttonCreator works")
-        // }
-
-        // buttonCreator();
-        
-        /*
-        // jquery syntax from postman
-        let urlSettings = {
-            'url': "https://app.ticketmaster.com/discovery/v2/events.json?countryCode=US&apikey=7elxdku9GGG5k8j0Xm8KWdANDgecHMV0&size=1&keyword=" + keyword,
-            "method": "GET",
-            "timeout": 0,
-        };
-        console.log(urlSettings.url); // see if the URL looks correct
-
-        // $.ajax(urlSettings).done(function (response) {
-        //     console.log(response);
-        // });
-        */
-
-
-        /*
-        // syntax from TM site
-        $.ajax({
-            type:"GET",
-            url:"https://app.ticketmaster.com/discovery/v2/events.json?size=1&apikey=7elxdku9GGG5k8j0Xm8KWdANDgecHMV0",
-            async:true,
-            dataType: "json",
-            success: function(json) {
-                        console.log(json);
-                        // Parse the response.
-                        // Do other things.
-                     },
-            error: function(xhr, status, err) {
-                        // This time, we do not end up here!
-                     }
-          });
-          */
     })
     
-
 
     $("#date-search").submit(() => {
         let year = parseInt($("#date-search-year").val());
         let month = parseInt($("#date-search-month").val());
         let day = parseInt($("#date-search-day").val());
-        
-        console.log(year, month, day)
          
         let result = [];
-        
+
         for (let event of eventRecommender.events) {
-            console.log(event.date.getMonth());
-            
             if ((Number.isNaN(year) || year === event.date.getFullYear()) &&
             (Number.isNaN(month) || month === event.date.getMonth() + 1) &&
             (Number.isNaN(day) || day === event.date.getDate())) {
@@ -207,12 +147,16 @@ const eventRecommender = new EventRecommender();
             }
         }
         let message = '';
-        console.log(result)
+
         for (let element of result) {
             message += `<li>${element.eventName}</li>`;
         }
 
-        $("#date-search-result").html(message);    
+        if (message === '') {
+            $("#date-search-result").html("No events found")
+        } else {
+            $("#date-search-result").html(message);    
+        }
     })
 
     $("#category-search").submit(() => { 

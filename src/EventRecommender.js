@@ -91,8 +91,8 @@ class EventRecommender {
 class Event {
     constructor(eventName, date, category, description, eventID) {
         this.eventID = eventID || Math.floor(Math.random() * 100000);
-        this.eventName = eventName;
         this.date = date; // expect date object in input
+        this.eventName = eventName;
         this.category = category;
         this.description = description || '';
     }
