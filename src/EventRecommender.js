@@ -11,9 +11,9 @@ class EventRecommender {
         this.bookmarkedEvents = {}
     }
 
-    addEvent(eventName, date, category, eventID, description) {
+    addEvent(eventID, eventName, date, category, description) {
     // Adds a new Event to the System
-        this.events.push(new Event(eventName, date, category, eventID, description));
+        this.events.push(new Event(eventID, eventName, date, category, description));
     }
 
     addUser(userName, userID) {
@@ -89,12 +89,12 @@ class EventRecommender {
 }
 
 class Event {
-    constructor(eventName, date, category, eventID, description) {
+    constructor(eventName, date, category, description, eventID) {
+        this.eventID = eventID || Math.floor(Math.random() * 100000);
         this.eventName = eventName;
         this.date = date; // expect date object in input
         this.category = category;
-        this.eventID = eventID || Math.floor(Math.random() * 100000);
-        this.description = description;
+        this.description = description || '';
     }
 
     getFormattedDate() {

@@ -3,10 +3,10 @@ const eventRecommender = new EventRecommender();
     eventRecommender.addUser("Lisa", 12345);
     eventRecommender.addUser("Kim", 12346);
     eventRecommender.addUser("Bob", 12347);
-    eventRecommender.addEvent("Dumpling Down – Lunar New Year Food Festival", new Date(2020, 01, 03), "Food and Drink", 11111, "The Biggest Lunar New Year Food Festival in San Francisco!");
-    eventRecommender.addEvent("Incredible Art Gallery Exhibit", new Date(2020, 01, 21), "Art and Theater", 22222, "There will be multiple exhibits of Harry Potter, Disney, Marvel, DC Comics, Star Wars, Anime and parody art on display featuring a variety of artists and available to purchase at affordable pricing.");
-    eventRecommender.addEvent("Developer Week", new Date(2020, 01, 12), "Tech", 33333, "Our conferences, tracks, technical workshops and events throughout the week invite you to get lessons, best practices -- and advanced knowledge");
-    eventRecommender.addEvent("2020 Levi's Presidio 10 ", new Date(2020, 03, 19), "Sport", 44444, "A fun, family-oriented race in the Presidio of San Francisco.");
+    eventRecommender.addEvent("Dumpling Down – Lunar New Year Food Festival", new Date(2020, 01, 03), "Food and Drink", "The Biggest Lunar New Year Food Festival in San Francisco!", 11111);
+    eventRecommender.addEvent("Incredible Art Gallery Exhibit", new Date(2020, 01, 21), "Arts & Theatre", "There will be multiple exhibits of Harry Potter, Disney, Marvel, DC Comics, Star Wars, Anime and parody art on display featuring a variety of artists and available to purchase at affordable pricing.", 22222);
+    eventRecommender.addEvent("Developer Week", new Date(2020, 01, 12), "Tech", "Our conferences, tracks, technical workshops and events throughout the week invite you to get lessons, best practices -- and advanced knowledge", 33333);
+    eventRecommender.addEvent("2020 Levi's Presidio 10 ", new Date(2020, 03, 19), "Sports", "A fun, family-oriented race in the Presidio of San Francisco.", 44444);
     eventRecommender.saveUserEvent(12346, 22222)
     eventRecommender.saveUserEvent(12346, 11111)
     eventRecommender.saveUserEvent(12345, 11111)
@@ -50,7 +50,7 @@ const eventRecommender = new EventRecommender();
    function displayEvents() {
        let displayEventText = '';
        for (let event of eventRecommender.events) { 
-           displayEventText += `<li>${event.eventID} - <b>${event.eventName}</b> - ${event.getFormattedDate()} - ${event.category} - ${event.description}</li>`;
+           displayEventText += `<li>${event.eventID} - <em>${event.eventName}</em> - ${event.getFormattedDate()} - ${event.category} - ${event.description}</li>`;
        }
        $("#all-events").html(displayEventText);
     }
@@ -66,7 +66,7 @@ const eventRecommender = new EventRecommender();
         let category = $("#add-event-category").val();
         let description = $("#add-event-description").val();
         
-        eventRecommender.addEvent(name, date, category, id, description);
+        eventRecommender.addEvent(name, date, category, description, id);
         displayEvents()
     })
 
@@ -88,15 +88,10 @@ const eventRecommender = new EventRecommender();
     
     $("#event-search").submit( (e) => {
         event.preventDefault();
+        
         let keyword = $("#tm-event-keyword").val();
         console.log(keyword);
 
-
-        function buttonCreator() {
-            let newButton = document.createElement("INPUT");
-            newButton.setAttribute("type", "submit");
-            // document.body.appendChild(newButton);
-        }
 
         // fetch syntax
         let requestOptions = {
@@ -104,31 +99,58 @@ const eventRecommender = new EventRecommender();
             redirect: 'follow'
         };
         
-        // fetches events in the US by keyword and displays top 3 events
-        fetch(`https://app.ticketmaster.com/discovery/v2/events.json?countryCode=US&apikey=7elxdku9GGG5k8j0Xm8KWdANDgecHMV0&size=3&keyword=${keyword}`, requestOptions)
+        // fetches events in the US by keyword and displays one event (size = 1)
+        fetch(`https://app.ticketmaster.com/discovery/v2/events.json?countryCode=US&apikey=7elxdku9GGG5k8j0Xm8KWdANDgecHMV0&size=1&keyword=${keyword}`, requestOptions)
         .then(response => response.json())
         .then(result => result._embedded.events)
-        // .then(events => console.log(events))
         .then(events => {
             let message = ''
             for (let event of events) {
                 let TMeventName = event.name;
                 let TMeventDate = event.dates.start.localDate;
                 let TMeventCategory = event.classifications["0"].segment.name;
-                // let btn = document.createElement("input");
-                // $("#event-search-result").appendChild(btn)
-                let results = `<li>${TMeventName} - ${moment(TMeventDate).format('MMM Do YYYY')} - ${TMeventCategory} INSERT BUTTON</li>`
-            
+                let TMeventLocation = event._embedded.venues["0"].name;
+                console.log(TMeventLocation);
 
-                // console.log(event.name, event.dates.start.localDate, event.classifications["0"].segment.name, event)
+                let results = `<li class="TM-event-search-result">${TMeventName} - ${moment(TMeventDate).format('MMM Do YYYY')} - ${TMeventCategory} - ${TMeventLocation}</li>`
+            
                 message += results;
+
+                eventRecommender.addEvent(TMeventName, TMeventDate, TMeventCategory, TMeventLocation);
             }
             $("#event-search-result").html(message)
+
+            // add a save all button below if it's not already there (ie. no children in div)
+            if (document.getElementById("btn").children.length === 0) {
+                let newButton = document.createElement("BUTTON");
+                newButton.innerHTML = "Save Event"
+                document.getElementById("btn").appendChild(newButton);
+            }
+            document.getElementById("btn").addEventListener("click", () => {
+                displayEvents()
+            })
         })
         .catch(error => {
             console.log('error', error);
             $("#event-search-result").html("No events found")
         });
+
+        // let newButton = document.createElement("BUTTON");
+        // newButton.innerHTML = "Save all"
+        // document.getElementById("btn").appendChild(newButton);
+        // console.log("buttonCreator works")
+        // document.getElementById("btn").addEventListener("click", () => {
+        //     displayEvents()
+        // })
+
+        // function buttonCreator() {
+        //     let newButton = document.createElement("BUTTON");
+        //     newButton.innerHTML = "Save all"
+        //     document.getElementById("btn").appendChild(newButton);
+        //     console.log("buttonCreator works")
+        // }
+
+        // buttonCreator();
         
         /*
         // jquery syntax from postman
