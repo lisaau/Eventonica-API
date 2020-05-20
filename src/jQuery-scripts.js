@@ -1,9 +1,9 @@
 $(document).ready( () => {
-const eventRecommender = new EventRecommender();
+    // Pre-populate with data
+    const eventRecommender = new EventRecommender();
     eventRecommender.addUser("Lisa", 12345);
     eventRecommender.addUser("Kim", 12346);
-    eventRecommender.addUser("Bob", 12347);
-    eventRecommender.addEvent("Dumpling Down – Lunar New Year Food Festival", new Date(2020, 01, 03), "Food and Drink", "The Biggest Lunar New Year Food Festival in San Francisco!", 11111);
+    eventRecommender.addEvent("Lunar New Year Food Festival", new Date(2020, 01, 03), "Food and Drink", "The Biggest Lunar New Year Food Festival in San Francisco!", 11111);
     eventRecommender.addEvent("Incredible Art Gallery Exhibit", new Date(2020, 01, 21), "Arts & Theatre", "There will be multiple exhibits of Harry Potter, Disney, Marvel, DC Comics, Star Wars, Anime and parody art on display featuring a variety of artists and available to purchase at affordable pricing.", 22222);
     eventRecommender.addEvent("Developer Week", new Date(2020, 01, 12), "Tech", "Our conferences, tracks, technical workshops and events throughout the week invite you to get lessons, best practices -- and advanced knowledge", 33333);
     eventRecommender.addEvent("2020 Levi's Presidio 10 ", new Date(2020, 03, 19), "Sports", "A fun, family-oriented race in the Presidio of San Francisco.", 44444);
@@ -20,6 +20,9 @@ const eventRecommender = new EventRecommender();
         eventRecommenderEvents.push(event);
     }
 
+
+    // ----- USERS ----- //
+    // Display all users when app is loaded
     function displayUsers() {
         let displayUserText = '';
         for (let user of eventRecommender.users) {
@@ -27,9 +30,7 @@ const eventRecommender = new EventRecommender();
         }
         $("#all-users").html(displayUserText);
     }
-    
     displayUsers();
-    
     
     $("#add-user").submit(() => {
         let name = $("#add-user-name").val();
@@ -47,6 +48,8 @@ const eventRecommender = new EventRecommender();
     })
     
 
+    // ----- EVENTS ----- //
+    // Display all events when app is loaded
    function displayEvents() {
        let displayEventText = '';
        for (let event of eventRecommender.events) { 
@@ -58,6 +61,7 @@ const eventRecommender = new EventRecommender();
     displayEvents();
 
     $("#add-event").submit(() => {
+        event.preventDefault();
         let id = parseInt($("#add-event-id").val());
         let name = $("#add-event-name").val();
         let date = $("#add-event-date").val();
@@ -69,6 +73,7 @@ const eventRecommender = new EventRecommender();
     })
 
     $("#delete-event").submit(() => {
+        event.preventDefault();
         let id = parseInt($("#delete-event-id").val());
         eventRecommender.deleteEvent(id);
         displayEvents();
@@ -76,14 +81,6 @@ const eventRecommender = new EventRecommender();
 
     
     // JQUERY FOR HANDLING TICKETMASTER SECTION
-    // take keyword input (validate?)
-    // use that keyword in TM API call ($.ajax? .get()?)
-    // using the data that was returned (first 10 events?)
-        // display error message if nothing found
-    // display those results below dynamically with buttons
-    // add event to EventRecommender if clicked button
-    // display event
-    
     $("#event-search").submit( (e) => {
         event.preventDefault();
         
@@ -134,6 +131,7 @@ const eventRecommender = new EventRecommender();
     
 
     $("#date-search").submit(() => {
+        event.preventDefault();
         let year = parseInt($("#date-search-year").val());
         let month = parseInt($("#date-search-month").val());
         let day = parseInt($("#date-search-day").val());
@@ -161,6 +159,7 @@ const eventRecommender = new EventRecommender();
     })
 
     $("#category-search").submit(() => { 
+        event.preventDefault();
         let category = $("#category-search-id").val();
         let filteredEvents = eventRecommender.findEventsByCategory(category); 
         if (filteredEvents.length === 0) {
@@ -203,6 +202,7 @@ const eventRecommender = new EventRecommender();
      displayBookmarkedEvents();
 
     $("#save-user-event").submit( () => {
+        event.preventDefault();
         let userid = parseInt($("#save-user-id").val());
         let eventid = parseInt($("#save-event-id").val());
         // updates eventRecommender 

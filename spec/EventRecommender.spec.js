@@ -62,10 +62,8 @@ describe("EventRecommender", () => {
   
     describe("deleteEvent", () => {
       it("removes the event from the system", () => {
-        console.log(er)
         er.addEvent("Event's Name", new Date(), "category", "description", 12345);
         er.deleteEvent(12345);
-        console.log(er)
         expect(er.events.length).toEqual(4);
       });
     });

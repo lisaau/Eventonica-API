@@ -63,7 +63,6 @@ class EventRecommender {
     deleteEvent(eventID) {
     // Deletes the Event from the system by the name of the event
         this.events = this.events.filter(event => event.eventID !== eventID);
-        // return this.users;
     }
 
     findEventsByDate(dateObject){
@@ -90,11 +89,11 @@ class EventRecommender {
 
 class Event {
     constructor(eventName, date, category, description, eventID) {
-        this.eventID = eventID || Math.floor(Math.random() * 100000);
-        this.date = date; // expect date object in input
         this.eventName = eventName;
+        this.date = date; // expect date object in input
         this.category = category;
         this.description = description || '';
+        this.eventID = eventID || Math.floor(Math.random() * 100000);
     }
 
     getFormattedDate() {
