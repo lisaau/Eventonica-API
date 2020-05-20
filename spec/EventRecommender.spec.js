@@ -1,14 +1,14 @@
-const { EventRecommender, User, Event } = require('../src/EventRecommender.js'); // Update with your class names and file name
+const { EventRecommender } = require('../src/EventRecommender.js');
 let er; 
 
 describe("EventRecommender", () => {
   
     beforeEach(() => {
       er = new EventRecommender();
-      er.addEvent("Event 1", new Date(2020, 01, 03), "Concert", 11111,  "Description on Event 1");
-      er.addEvent("Event 2", new Date(2020, 02, 03), "Concert", 22222, "Description on Event 2");
-      er.addEvent("Event 3", new Date(2020, 04, 03), "Sport", 33333, "Description on Event 3");
-      er.addEvent("Event 4", new Date(2020, 05, 03), "Art and Theater", 44444, "Description on Event 4");
+      er.addEvent("Event 1", new Date(2020, 01, 03), "Concert",  "Description on Event 1", 11111);
+      er.addEvent("Event 2", new Date(2020, 02, 03), "Concert", "Description on Event 2", 22222);
+      er.addEvent("Event 3", new Date(2020, 04, 03), "Sport", "Description on Event 3", 33333);
+      er.addEvent("Event 4", new Date(2020, 05, 03), "Art and Theater", "Description on Event 4", 44444);
     });
   
     describe("addEvent", () => {
@@ -57,14 +57,15 @@ describe("EventRecommender", () => {
       it("removes a User from the system", () => {
         er.addUser("User's Name", 12345);
         er.deleteUser(12345);
-        // expect(er.users.length).toEqual(0);
       });
     });
   
     describe("deleteEvent", () => {
       it("removes the event from the system", () => {
-        er.addEvent("Event's Name", new Date(), "category", 12345);
+        console.log(er)
+        er.addEvent("Event's Name", new Date(), "category", "description", 12345);
         er.deleteEvent(12345);
+        console.log(er)
         expect(er.events.length).toEqual(4);
       });
     });
