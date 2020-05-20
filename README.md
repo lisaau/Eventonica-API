@@ -1,39 +1,56 @@
-# Eventonica with API Calls
+# Eventonica with External API
 
-Eventonica is a web app to manage events from Techtonica's curriculum outlined here: https://github.com/Techtonica/curriculum/tree/master/projects/eventonica.
+Eventonica is a web app to manage events from [Techtonica's curriculum](https://github.com/Techtonica/curriculum/tree/master/projects/eventonica). This repo includes part 4 listed in the [Overview](#overview).
 
-This includes API calls from Techtonica's [Part 4 - API's](https://github.com/Techtonica/curriculum/blob/master/projects/eventonica/eventonica-part4-apis.md) instructions to build on the [Eventonica project](https://github.com/lisaau/Eventonica).
-
-View the web app: https://lisaau.github.io/Eventonica-API/
-
-<img src="/eventonica-preview.png" alt="eventonica-preview" style="zoom:67%;" />
+View the web app: https://lisaau.github.io/Eventonica-API/ OR https://lisaau-eventonica.netlify.app/
 
 
 
-### Project Design
+## Overview
 
-This builds on the first phase of the project which can be viewed at https://github.com/lisaau/Eventonica
+The project is split into seven phases covering various topics, some of which are in a different GitHub repo.
 
-In addition to an **object-oriented-programming** approach to set up the functionality, **jasmine** for unit testing, and **jQuery** for the UI, this part of the project focuses on utilizing **Ticketmaster's API** to add additional events to this app.
+| Project Outline                                              | Project Repo                                                 |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [Part 1 - Object-Oriented Programming](https://github.com/Techtonica/curriculum/blob/master/projects/eventonica/eventonica-part1-objects.md) | [Eventonica](https://github.com/lisaau/Eventonica)           |
+| [Part 2 - Testing](https://github.com/Techtonica/curriculum/blob/master/projects/eventonica/eventonica-part2-testing.md) | [Eventonica](https://github.com/lisaau/Eventonica)           |
+| [Part 3 - jQuery UI](https://github.com/Techtonica/curriculum/blob/master/projects/eventonica/eventonica-part3-jquery-ui.md) | [Eventonica](https://github.com/lisaau/Eventonica)           |
+| [Part 4 - API's](https://github.com/Techtonica/curriculum/blob/master/projects/eventonica/eventonica-part4-apis.md) | [Eventonica-API](https://github.com/lisaau/Eventonica-API)   |
+| [Part 5 - Express Backend](https://github.com/Techtonica/curriculum/blob/master/projects/eventonica/eventonica-part5-express-backend.md) | [Eventonica-With-Express](https://github.com/lisaau/Eventonica-Express) |
+| [Part 6 - Postgres Database](https://github.com/Techtonica/curriculum/blob/master/projects/eventonica/eventonica-part6-postgres.md) | [Eventonica-Postgres](https://github.com/lisaau/Eventonica-Postgres) |
+| [Part 7 - React Frontend](https://github.com/Techtonica/curriculum/blob/master/projects/eventonica/eventonica-part7-react.md) | [Eventonica-React](https://github.com/lisaau/Eventonica-React) |
 
 
 
-### Set up
+### Part 4
 
-1. To view locally on your machine, clone this repo
+The project builds on part 1-3. In addition to an **object-oriented-programming** approach to set up the functionality, **jasmine** for unit testing, and **jQuery** for the UI, this part of the project focuses on utilizing **Ticketmaster's API** to add additional events to this app.
 
-   ```
-   git clone https://github.com/lisaau/Eventonica-API.git
-   cd Eventonica-API
-   ```
+Note- this project includes a [simple static file server](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Node_server_without_framework), `nodeServer.js`, without the use of a framework to demonstrate understanding of server-side programming. Running the app with this server will display the `404.html` file if the route does not exist.
 
-2. Install depencies and start the app
 
-   ```
-   npm install
-   npm start
-   ```
 
-3. To run the unit tests, run `jasmine` in your terminal
+## Running the app
 
-4. To view on a browser, go to http://127.0.0.1:8125/
+To run locally, 
+
+1. Clone this repo by running
+
+```bash
+git clone https://github.com/lisaau/Eventonica-API.git
+cd Eventonica-API
+```
+
+2. Then install dependencies and start the app 
+
+```bash
+npm install
+npm start
+```
+
+3. To view the app, you may open the HTML file in the browser or run it with the static file server that is part of this repo
+   1. OPTION 1: 
+      Open `index.html` in the browser of your choice to view the app
+   2. OPTION 2:
+      Run `node nodeServer.js` in the terminal to start the server and then view the app on http://localhost:8125/
+4. To run the tests, type `jasmine` in the terminal
