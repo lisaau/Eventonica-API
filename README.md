@@ -45,7 +45,6 @@ cd Eventonica-API
 
 ```bash
 npm install
-npm start
 ```
 
 3. To view the app, you may open the HTML file in the browser or run it with the static file server that is part of this repo
